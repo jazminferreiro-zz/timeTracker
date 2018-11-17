@@ -23,9 +23,9 @@ def index(request):
     context = {'desarrolladores' : desarrolladores}
     return render(request, 'timeTracker/index.html', context)
 
-def verDesarrollador(request, desarrollador_id):
+def detail(request, desarrollador_id):
 	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
-	return render(request, 'timeTracker/verDesarrollador.html',{'desarrollador': desarrollador})
+	return render(request, 'timeTracker/detail.html', {'desarrollador': desarrollador})
 
 
 
