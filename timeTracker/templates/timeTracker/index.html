@@ -1,0 +1,9 @@
+{% if desarrolladores %}
+    <ul>
+    {% for desarrollador in desarrolladores %}
+    	<li>{{desarrollador.nombre}} {{desarrollador.appellido}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay Empleados.</p>
+{% endif %}

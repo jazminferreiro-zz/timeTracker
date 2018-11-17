@@ -1,0 +1,6 @@
+<h1>{{ proyecto.nombre_proyecto }}</h1>
+<ul>
+{% for choice in proyecto.tarea_set.all %}
+    <li>{{ choice.nombre_tarea }}</li>
+{% endfor %}
+</ul>
