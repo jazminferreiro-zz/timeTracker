@@ -1,0 +1,11 @@
+{% if desarrollador %}
+<h1>{{ desarrolador.nombre }}</h1>
+<h1>{{ desarrolador.apellido }}</h1>
+<p>{{ desarrolador.edad }}</p>
+
+<p>Calendario</p>
+<a href="nueva-entrada/">nueva entrada</a>
+
+{% else %}
+    <p>Empleado desvinculado</p>
+{% endif %}

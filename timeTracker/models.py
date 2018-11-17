@@ -7,13 +7,13 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Proyecto(models.Model):
 	nombre= models.CharField(max_length=200)
 	def __str__(self):
-		return self.nombre_proyecto
+		return self.nombre
 
 class Tarea(models.Model):
 	nombre = models.CharField(max_length=200)
 	proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
 	def __str__(self):
-		return self.nombre_tarea
+		return self.nombre
 
 class Horas(models.Model):
 	fecha = models.DateTimeField(auto_now_add=True, blank=False)
@@ -27,9 +27,9 @@ class Desarrollador(models.Model):
 	nombre = models.CharField(max_length=200)
 	apellido= models.CharField(max_length=200)
 	edad = models.IntegerField(validators=[MinValueValidator(0)])
-	horas = models.ForeignKey(Horas, on_delete=models.CASCADE)
+	horas = models.ForeignKey(Horas, blank=True, null=True, on_delete=models.CASCADE)
 	def __str__(self):
-		return self.nombre_desarrollador+' '+self.apellido_desarrollador
+		return self.nombre+' '+self.apellido
 
 
 

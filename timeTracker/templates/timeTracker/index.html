@@ -1,7 +1,9 @@
 {% if desarrolladores %}
     <ul>
     {% for desarrollador in desarrolladores %}
-    	<li>{{desarrollador.nombre}} {{desarrollador.appellido}}</li>
+    	<li>
+    		<a href="verDesarrollador/{{desarrollador.id}}/">{{desarrollador.nombre}}</a>
+    	</li>
     {% endfor %}
     </ul>
 {% else %}
