@@ -23,13 +23,11 @@ class Desarrollador(models.Model):
 	def __str__(self):
 		return self.nombre+' '+self.apellido
 
-
-
 class Horas(models.Model):
+	desarrollador = models.ForeignKey(Desarrollador, on_delete=models.CASCADE, blank= True, null=True)
+	tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL, blank= True, null=True)
 	cantidad = models.IntegerField(validators=[MinValueValidator(0)])
 	fecha = models.DateTimeField(auto_now_add=True, blank=False)
-	tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL, blank= True, null=True)
-	desarrollador = models.ForeignKey(Desarrollador, on_delete=models.CASCADE, blank= True, null=True)
 	def __str__(self):
 		return 'Proyecto= ' + str(self.tarea.proyecto)+\
 		', \nTarea= ' + str(self.tarea)+ \

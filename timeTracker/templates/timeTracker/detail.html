@@ -1,4 +1,39 @@
 {{desarrollador}}
-{{desarrollador.nombre}}
-{{desarrollador.apellido}}
-{{desarrollador.edad}}
+
+
+<form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
+{% csrf_token %}
+	Horas: <input type="number" name="cantidad" value="1" min="1" max="1000"><br>
+	Proyecto: 
+	<select name="proyecto" onchange="ChangeList(this)">
+	{% for proyecto in proyectos %}
+   		<option value="{{proyecto.nombre}}">{{proyecto.nombre}}</option>
+  {% endfor %}
+  </select><br>
+
+  <select name="tarea" id="tareasSelect" value="------"></select><br>
+	
+	<input type="submit" value="Nueva entrada" />
+</form>
+
+<script>
+
+var tareasPorProyecto = JSON.parse("{{tareasPorProyecto}}".replace(/&quot;/g,'"'));
+
+function ChangeList(selectObject) {
+	var proyectoSeleccionado = selectObject.value;
+  var tareasSelect = document.getElementById("tareasSelect");
+  while (tareasSelect.options.length) {
+        tareasSelect.remove(0);
+  }
+  var tareas = tareasPorProyecto[proyectoSeleccionado];
+  if (tareas) {
+    var i;
+    for (i = 0; i < tareas.length; i++) {
+      var tarea = new Option(tareas[i], i);
+      tareasSelect.options.add(tarea);
+    }
+  }
+} 
+</script>
+
