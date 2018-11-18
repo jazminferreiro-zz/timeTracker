@@ -9,12 +9,12 @@
 
 <form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
 {% csrf_token %}
-	Horas: <input type="number" name="cantidad" value="1" min="1" max="1000"><br>
-	Proyecto: 
-	<select name="proyecto" onchange="ChangeList(this)">
+  Horas: <input type="number" name="cantidad" value="1" min="1" max="1000"><br>
+  Proyecto: 
+  <select name="proyecto" onchange="ChangeList(this)">
       <option value="" selected disabled hidden>Seleccione Proyecto</option>
-	{% for proyecto in proyectos %}
-   		<option value="{{proyecto.nombre}}">{{proyecto.nombre}}</option>
+  {% for proyecto in proyectos %}
+      <option value="{{proyecto.nombre}}">{{proyecto.nombre}}</option>
   {% endfor %}
   </select><br>
 
@@ -22,19 +22,17 @@
   <select name="tarea" id="tareasSelect" >
     <option value="" selected disabled hidden>Seleccione Tarea</option>
   </select><br>
-	
-	<input type="submit" value="Agregar horas" />
+  
+  <input type="submit" value="Agregar horas" />
 </form>
 
 <script>
-
 var tareasPorProyecto = JSON.parse("{{tareasPorProyecto}}".replace(/&quot;/g,'"'));
-
 function ChangeList(selectObject) {
-	var proyectoSeleccionado = selectObject.value;
+  var proyectoSeleccionado = selectObject.value;
   var tareasSelect = document.getElementById("tareasSelect");
-  for (i = 1; i < tareasSelect.options.lengthh; i++) {
-      tareasSelect.remove(i);
+  while (tareasSelect.options.length) {
+        tareasSelect.remove(0);
   }
   var tareas = tareasPorProyecto[proyectoSeleccionado];
   if (tareas) {

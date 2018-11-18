@@ -33,16 +33,21 @@ def detail(request, desarrollador_id):
 
 def add(request, desarrollador_id):
 	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
-	cantidad = request.POST['cantidad']
-	proyecto =request.POST['proyecto']
+	
+	cantidad = int(request.POST['cantidad'])
+
+	print request.POST['proyecto']
+	#print Proyecto.objects.all().get(pk=request.POST['proyecto'])	
+	
+	
+	print cantidad
 	dic = tareasPorProyecto()
 	tarea_index = int(request.POST['tarea'])
 	tareas = dic.get(proyecto)
 	tarea = tareas[tarea_index]
-
-	print proyecto	
-	print cantidad
 	print tarea
+
+	#print desarrollador.horas_set.create( cantidad = cantidad, proyecto = proyecto )
 	return HttpResponseRedirect(reverse('timeTracker:detail', args=(desarrollador.id,)))
    
 
