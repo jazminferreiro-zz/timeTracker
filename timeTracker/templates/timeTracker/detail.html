@@ -1,5 +1,11 @@
 {{desarrollador}}
 
+<ul>
+{% for horas in desarrollador.horas_set.all %}
+    <li>{{horas.tarea.proyecto.nombre}} {{horas.tarea.nombre}} {{ horas.cantidad }}</li>
+{% endfor %}
+</ul>
+
 
 <form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
 {% csrf_token %}
@@ -17,7 +23,7 @@
     <option value="" selected disabled hidden>Seleccione Tarea</option>
   </select><br>
 	
-	<input type="submit" value="Nueva entrada" />
+	<input type="submit" value="Agregar horas" />
 </form>
 
 <script>

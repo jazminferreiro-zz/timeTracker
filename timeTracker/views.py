@@ -9,6 +9,16 @@ from .models import Tarea
 from .models import Desarrollador
 
 
+def tareasPorProyecto():
+	dic = {}
+	for proyecto in Proyecto.objects.all():
+		tareas = []
+		for tarea in proyecto.tarea_set.all():
+			tareas.append(tarea.nombre)
+		dic[proyecto.nombre] = tareas
+	return dic;
+
+
 def index(request):
     desarrolladores = Desarrollador.objects.all()
     context = {'desarrolladores' : desarrolladores}
@@ -17,24 +27,22 @@ def index(request):
 def detail(request, desarrollador_id):
 	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
 	proyectos = Proyecto.objects.all()
-	dic = {}
-	for proyecto in Proyecto.objects.all():
-		tareas = []
-		for tarea in proyecto.tarea_set.all():
-			tareas.append(tarea.nombre)
-		dic[proyecto.nombre] = tareas
-
-	dicPrueba = {'val1' : 'this is x', 'val2' : True}
-
+	dic = tareasPorProyecto()
 	context = {'desarrollador': desarrollador,'proyectos':proyectos, 'tareasPorProyecto':json.dumps(dic)}
 	return render(request, 'timeTracker/detail.html',context)
 
 def add(request, desarrollador_id):
 	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
-	proyecto =request.POST['proyecto']
 	cantidad = request.POST['cantidad']
+	proyecto =request.POST['proyecto']
+	dic = tareasPorProyecto()
+	tarea_index = int(request.POST['tarea'])
+	tareas = dic.get(proyecto)
+	tarea = tareas[tarea_index]
+
 	print proyecto	
 	print cantidad
+	print tarea
 	return HttpResponseRedirect(reverse('timeTracker:detail', args=(desarrollador.id,)))
    
 
