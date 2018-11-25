@@ -3,7 +3,16 @@
 {% block content %}
 
 
-{{desarrollador}}
+
+<h1 class="display-3"></h1>
+
+<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+          <blockquote class="blockquote text-right">
+              <h1 class="display-3">{{desarrollador}}</h1>
+              <footer class="blockquote-footer">Desarrollador junior {{desarrollador.edad}} anios</footer>
+          </blockquote>
+</div>
+
 
 {% for horas in desarrollador.horas_set.all %}
     <div class="row">
@@ -14,28 +23,33 @@
 {% endfor %}
 
 
-<form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
-{% csrf_token %}
+  <form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
+  {% csrf_token %}
 
-  Fecha: <input type="date" name="fecha"><br>
-  
-  Horas: <input type="number" name="cantidad" value="1" min="1" max="1000"><br>
-  
-  Proyecto: 
-  <select name="proyecto" onchange="ChangeList(this)">
-      <option value="" selected disabled hidden>Seleccione Proyecto</option>
-  {% for proyecto in proyectos %}
-      <option value="{{proyecto.nombre}}">{{proyecto.nombre}}</option>
-  {% endfor %}
-  </select><br>
+    Fecha: <input type="date" name="fecha"><br>
+    <div class="row">
+        <div class="col-sm-4">
+          <select class="form-control form-control-lg" name="proyecto" onchange="ChangeList(this)">
+              <option value="" selected disabled hidden>Seleccione Proyecto</option>
+              {% for proyecto in proyectos %}
+                <option value="{{proyecto.nombre}}">{{proyecto.nombre}}</option>
+              {% endfor %}
+          </select><br>
+        </div>
+        <div class="col-sm-4">
+          <select class="form-control form-control-lg"name="tarea" id="tareasSelect" >
+              <option value="" selected disabled hidden>Seleccione Tarea</option>
+          </select><br>
+          </select>
+        </div>
+        <div class="col-sm-4">
+            <input class="form-control form-control-lg" type="number" name="cantidad" value="1" min="1" max="1000"><br>
+            <button type="submit" class="btn btn-success">+</button>
+        </div>
+           
+    </div>
+  </form>
 
-  Tarea:
-  <select name="tarea" id="tareasSelect" >
-    <option value="" selected disabled hidden>Seleccione Tarea</option>
-  </select><br>
-
-  <input type="submit" value="Agregar horas" />
-</form>
 
 
 
@@ -62,7 +76,7 @@ function ChangeList(selectObject) {
       var tarea = new Option(tareas[i], i);
       tareasSelect.options.add(tarea);
     }
-    var defaultOption = new Option("Seleccione tarea", i);
+    var defaultOption = new Option("Seleccione Tarea", i);
     defaultOption.setAttribute("selected", "true");
     defaultOption.setAttribute("disabled","true" );
     defaultOption.setAttribute("hidden","true");
