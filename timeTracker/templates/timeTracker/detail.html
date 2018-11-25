@@ -5,11 +5,13 @@
 
 {{desarrollador}}
 
-<ul>
 {% for horas in desarrollador.horas_set.all %}
-    <li>{{horas.tarea.proyecto.nombre}} {{horas.tarea.nombre}} {{ horas.cantidad }}</li>
+    <div class="row">
+        <div class="col-sm-4">{{horas.tarea.proyecto.nombre}}</div>
+        <div class="col-sm-4">{{horas.tarea.nombre}}</div>
+        <div class="col-sm-4">{{horas.cantidad }}</div>
+    </div>
 {% endfor %}
-</ul>
 
 
 <form action="{% url 'timeTracker:add' desarrollador.id %}" method="post">
@@ -34,6 +36,16 @@
 
   <input type="submit" value="Agregar horas" />
 </form>
+
+
+
+
+  
+
+
+
+
+
 
 <script>
 var tareasPorProyecto = JSON.parse("{{tareasPorProyecto}}".replace(/&quot;/g,'"'));
