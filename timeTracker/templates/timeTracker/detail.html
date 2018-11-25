@@ -41,6 +41,11 @@ function ChangeList(selectObject) {
       var tarea = new Option(tareas[i], i);
       tareasSelect.options.add(tarea);
     }
+    var defaultOption = new Option("Seleccione tarea", i);
+    defaultOption.setAttribute("selected", "true");
+    defaultOption.setAttribute("disabled","true" );
+    defaultOption.setAttribute("hidden","true");
+    tareasSelect.options.add(defaultOption);
   }
 } 
 </script>
