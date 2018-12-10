@@ -85,14 +85,28 @@ def step_impl(context):
 
 #############################################################
 
-
+@when('we try to add hours with black project')
+def step_impl(context):
+	context.exc = context.model.cargarHoras(5, "", 0, "20/12/2016")
+	
 @when('we try to add hours with not project')
 def step_impl(context):
 	context.exc = context.model.cargarHoras(5, None, 0, "20/12/2016")
 	
-@then('it throws a ValidationError with message "El proyecto es obligatorio"')
+
+#############################################################
+
+@when('we try to add more than 24 hours')
 def step_impl(context):
-	assert (context.exc.msg == "El proyecto es obligatorio") is True
+	context.exc = context.model.cargarHoras(5, "p1",0, 25, "20/12/2016")
+
+
+#############################################################
+	
+@then('it throws a ValidationError with message "{msg}"')
+def step_impl(context, msg):
+	print context.exc.msg
+	assert (context.exc.msg == msg) is True
 
 #############################################################
 

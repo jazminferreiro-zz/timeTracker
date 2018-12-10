@@ -30,7 +30,15 @@ Feature: showing off behave
       Then we will find an hour created
       
 
- Scenario: hour validation
+ Scenario: add hour validation
       Given a developer
       When we try to add hours with not project
       Then it throws a ValidationError with message "El proyecto es obligatorio"
+
+      Given a developer
+      When we try to add hours with black project
+      Then it throws a ValidationError with message "El proyecto es obligatorio"
+
+      Given a developer
+      When we try to add more than 24 hours
+      Then it throws a ValidationError with message "La cantidad de horas debe ser menor a 24"

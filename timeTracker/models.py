@@ -54,7 +54,9 @@ class Desarrollador(models.Model):
 			cantidad = int(cant)
 		except:
 			return ValidationError("La cantidad de horas debe ser un valor positivo mayor a uno")
-		
+		if(cantidad > 24):
+			return ValidationError("La cantidad de horas debe ser menor a 24")
+
 		if(proyecto == None or proyecto == ""):
 			return ValidationError("El proyecto es obligatorio")
 
