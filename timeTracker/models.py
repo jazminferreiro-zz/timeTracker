@@ -61,16 +61,17 @@ class Desarrollador(models.Model):
 			return ValidationError("El proyecto es obligatorio")
 
 		try:
+			fecha = datetime.strptime(fecha, '%Y-%m-%d')
+		except:
+			return ValidationError("La fecha es obligatoria")
+
+		try:
 			tarea_index = int(tarea)
 			tarea_name = self.getTareasPorProyecto()[proyecto][tarea_index]
 			tarea =  Tarea.objects.get(nombre=tarea_name)
 		except:
 			return ValidationError("La tarea es obligatoria")
 
-		try:
-			fecha = datetime.strptime(fecha, '%Y-%m-%d')
-		except:
-			return ValidationError("La fecha es obligatoria")
 
 		self.horas_set.create( desarrollador = self, tarea = tarea, cantidad = cantidad, fecha = fecha)
 		return None

@@ -109,6 +109,21 @@ def step_impl(context):
 
 
 #############################################################
+
+
+@when('we try to we try to add hours vith no date')
+def step_impl(context):
+	context.exc = context.model.cargarHoras(2, "p1",0, None)
+
+
+#############################################################
+
+@when('we try to add hours vith invalid date format')
+def step_impl(context):
+	context.exc = context.model.cargarHoras(2, "p1",0, "34 de noviembre de 2018")
+
+
+#############################################################
 	
 @then('it throws a ValidationError with message "{msg}"')
 def step_impl(context, msg):

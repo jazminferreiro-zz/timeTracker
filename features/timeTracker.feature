@@ -43,8 +43,14 @@ Feature: showing off behave
       When we try to add a not integer quantity value
       Then it throws a ValidationError with message "La cantidad de horas debe ser un valor positivo mayor a uno"
 
-      
-
       Given a developer
       When we try to add more than 24 hours
       Then it throws a ValidationError with message "La cantidad de horas debe ser menor a 24"
+
+      Given a developer
+      When we try to we try to add hours vith no date
+      Then it throws a ValidationError with message "La fecha es obligatoria"
+
+      Given a developer
+      When we try to add hours vith invalid date format
+      Then it throws a ValidationError with message "La fecha es obligatoria"
