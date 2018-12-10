@@ -22,11 +22,11 @@
     </div>
 {% endfor %}
 
-{% if error%}
+{% for error in errors %}
   <div class="alert alert-danger">
-    <strong>Error: revise los campos</strong>
+    <strong>Error: {{error}}</strong>
   </div>
-{% endif %}
+{% endfor %}
 
 
 

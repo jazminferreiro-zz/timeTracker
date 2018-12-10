@@ -5,29 +5,20 @@ from django import forms
 from django.urls import reverse
 
 import simplejson as json
-from datetime import datetime
 
-from .forms import AddHoursForm
 
-from .models import Proyecto
-from .models import Tarea
-from .models import Desarrollador
-from .models import Horas
+
+from .models import *
 
 
 
 
-tareasPorProyecto = None
-
-def fillGlobalDictionary():
-	global tareasPorProyecto
-	tareasPorProyecto = {}
-	for proyecto in Proyecto.objects.all():
-		tareas = []
-		for tarea in proyecto.tarea_set.all():
-			tareas.append(tarea.nombre)
-		tareasPorProyecto[proyecto.nombre] = tareas
-	return tareasPorProyecto;
+def renderDetail(request, desarrollador_id, errors):
+	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
+	proyectos = Proyecto.objects.all()
+	tareasPorProyecto = desarrollador.getTareasPorProyecto()
+	context = {'desarrollador': desarrollador,'proyectos':proyectos, 'tareasPorProyecto':json.dumps(tareasPorProyecto), 'errors': errors}
+	return render(request, 'timeTracker/detail.html', context)
 
 
 
@@ -37,55 +28,24 @@ def index(request):
     return render(request, 'timeTracker/index.html', context)
 
 def detail(request, desarrollador_id):
-	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
-	proyectos = Proyecto.objects.all()
-	fillGlobalDictionary()
-	global tareasPorProyecto
-	context = {'desarrollador': desarrollador,'proyectos':proyectos, 'tareasPorProyecto':json.dumps(tareasPorProyecto),'error':False}
-	return render(request, 'timeTracker/detail.html',context)
+	return renderDetail(request, desarrollador_id, [])
 
 def add(request, desarrollador_id):
 	desarrollador = get_object_or_404(Desarrollador, pk=desarrollador_id)
 
-	if request.method == 'POST':
-		#create a form instance and populate it with data from the request:
-		print "En un POST"
-		form = AddHoursForm(request.POST)
-		#check whether it's valid:
-		if form.is_valid():
-        	#process the data in form.cleaned_data as required
-			print "es validaaaaaaaa"
-           	
+	cantidad = request.POST.get('cantidad',None)
+	proyecto =  request.POST.get('proyecto', None)
+	tarea_index = request.POST.get('tarea', None)
+	fecha = request.POST.get('fecha', None)
 
-
-			cantidad = int(request.POST['cantidad'])
-			print "cantidad: " + str(cantidad)
-
-			proyecto =  request.POST['proyecto'] 
-			print "proyecto: " + proyecto
-
-			tarea_index = int(request.POST['tarea'])
-			global tareasPorProyecto
-			tarea_name = tareasPorProyecto.get(proyecto)[tarea_index]
-			print "tarea: "+ tarea_name
-			tarea =  get_object_or_404(Tarea, nombre=tarea_name)
-
-			fecha = request.POST['fecha']
-			print "fecha: "+ fecha
-			fecha = datetime.strptime(fecha, '%Y-%m-%d')
-		
-
-			#agrego horas
-			desarrollador.horas_set.create( desarrollador = desarrollador, tarea = tarea, cantidad = cantidad, fecha = fecha)
-			
-			return HttpResponseRedirect(reverse('timeTracker:detail', args=(desarrollador.id,)))
-		else:	
-			print "no es valida"
-			print form.errors.as_data()
-			proyectos = Proyecto.objects.all()
-			context = {'desarrollador': desarrollador,'proyectos':proyectos, 'tareasPorProyecto':json.dumps(tareasPorProyecto), 'error':True}
-			return render(request, 'timeTracker/detail.html', context)
-
-	#if a GET (or any other method) we'll create a blank form
+	validationError = desarrollador.cargarHoras(cantidad, proyecto, tarea_index, fecha)
+	if(validationError == None):
+		return HttpResponseRedirect(reverse('timeTracker:detail', args=(desarrollador.id,)))
 	else:
-		print "es un GET"
+		return renderDetail(request, desarrollador_id, [validationError.msg])
+		
+			
+		
+			
+
+
