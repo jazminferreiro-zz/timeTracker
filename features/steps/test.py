@@ -74,38 +74,30 @@ def step_impl(context):
 	context.model = Desarrollador(nombre="juan",apellido = "code",edad= "55");
 	
 
-@when('we add hour')
-def step_impl(context):
-	proyecto = Proyecto(nombre= "p1")
-	context.model.cargarHoras(5, proyecto, 0, "20/12/2016")
-
-@then('we will find an hour created')
-def step_impl(context):
-	assert context.failed is False
-
 #############################################################
+
 
 @when('we try to add hours with black project')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(5, "", 0, "20/12/2016")
+	context.exc = context.model.cargarHoras(5, "", 0, "2016-12-29", {}, [])
 	
 @when('we try to add hours with not project')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(5, None, 0, "20/12/2016")
+	context.exc = context.model.cargarHoras(5, None, 0, "2016-12-29",{}, [])
 	
 
 #############################################################
 
 @when('we try to add a not integer quantity value')
 def step_impl(context):
-	context.exc = context.model.cargarHoras("cinco", "p1", 0, "20/12/2016")
+	context.exc = context.model.cargarHoras("cinco", "p1", 0, "2016-12-29",{}, [])
 
 
 #############################################################
 
 @when('we try to add more than 24 hours')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(25, "p1",0, "20/12/2016")
+	context.exc = context.model.cargarHoras(25, "p1",0, "2016-12-29",{}, [])
 
 
 #############################################################
@@ -113,22 +105,75 @@ def step_impl(context):
 
 @when('we try to we try to add hours vith no date')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(2, "p1",0, None)
+	context.exc = context.model.cargarHoras(2, "p1",0, None,{}, [])
 
 
 #############################################################
 
 @when('we try to add hours vith invalid date format')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(2, "p1",0, "34 de noviembre de 2018")
+	context.exc = context.model.cargarHoras(2, "p1",0, "34 de noviembre de 2018",{}, [])
 
 
 #############################################################
-	
+
+@when('we try to add hours vith None task index')
+def step_impl(context):
+	context.exc = context.model.cargarHoras(2, "p1",None, "2016-12-29",{}, [])
+
+
+#############################################################
+
+@when('we try to add hours vith invalid task index')
+def step_impl(context):
+	context.exc = context.model.cargarHoras(2, "p1",0, "2016-12-29",{}, [])
+
+
+#############################################################
 @then('it throws a ValidationError with message "{msg}"')
 def step_impl(context, msg):
 	print context.exc.msg
 	assert (context.exc.msg == msg) is True
 
 #############################################################
+@when('we try to add hour with invalid task')
+def step_impl(context):
+	proyecto1 = Proyecto(nombre="proyecto1")
+	tarea0 = Tarea(nombre ="tarea0",proyecto = proyecto1)
+
+	proyecto2 = Proyecto(nombre="proyecto2")
+	tarea1 = Tarea(nombre ="tarea1",proyecto = proyecto2)
+	tareasPorProyectos = {}
+	tareasPorProyectos["proyecto1"] = ["tarea3"]
+	tareasPorProyectos["proyecto2"] = ["tarea1"]
+	tareas = [tarea0, tarea1]
+
+	context.exc = context.model.cargarHoras(2, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
+	print context.exc.msg
+
+#############################################################
+
+@when('we add hour')
+def step_impl(context):
+	proyecto1 = Proyecto(nombre="proyecto1")
+	tarea0 = Tarea(nombre ="tarea0",proyecto = proyecto1)
+
+	proyecto2 = Proyecto(nombre="proyecto2")
+	tarea1 = Tarea(nombre ="tarea1",proyecto = proyecto2)
+	tareasPorProyectos = {}
+	tareasPorProyectos["proyecto1"] = ["tarea0"]
+	tareasPorProyectos["proyecto2"] = ["tarea1"]
+	tareas = [tarea0, tarea1]
+
+	context.exc = context.model.cargarHoras(2, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
+	print context.exc.msg
+
+@then('we will find an hour created')
+def step_impl(context):
+	assert context.failed is False
+	assert context.exc == None is True
+
+#############################################################
+
+
 

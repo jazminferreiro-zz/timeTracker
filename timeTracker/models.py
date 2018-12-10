@@ -37,19 +37,13 @@ class Desarrollador(models.Model):
 	apellido= models.CharField(max_length=200)
 	edad = models.IntegerField(validators=[MinValueValidator(0)])
 
+	def buscarTarea(self, tareas, tarea_name):
+		for tarea in tareas:
+			if(tarea.nombre == tarea_name):
+				return tarea
+		return None
 
-
-	def getTareasPorProyecto(self):
-		tareasPorProyecto = {}
-		for proyecto in Proyecto.objects.all():
-			tareas = []
-			for tarea in proyecto.tarea_set.all():
-				tareas.append(tarea.nombre)
-			tareasPorProyecto[proyecto.nombre] = tareas
-		return tareasPorProyecto
-
-
-	def cargarHoras(self, cant, proyecto, tarea,fecha):
+	def cargarHoras(self, cant, proyecto, tarea,fecha, tareasPorProyecto, tareas):
 		try:
 			cantidad = int(cant)
 		except:
@@ -67,11 +61,13 @@ class Desarrollador(models.Model):
 
 		try:
 			tarea_index = int(tarea)
-			tarea_name = self.getTareasPorProyecto()[proyecto][tarea_index]
-			tarea =  Tarea.objects.get(nombre=tarea_name)
+			tarea_name = tareasPorProyecto[proyecto][tarea_index]
 		except:
 			return ValidationError("La tarea es obligatoria")
-
+		
+		tarea =  self.buscarTarea(tareas, tarea_name)
+		if(tarea == None):
+			return ValidationError("La tarea: "+tarea_name+ " no esta disponible")
 
 		self.horas_set.create( desarrollador = self, tarea = tarea, cantidad = cantidad, fecha = fecha)
 		return None

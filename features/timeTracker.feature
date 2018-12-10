@@ -54,3 +54,16 @@ Feature: showing off behave
       Given a developer
       When we try to add hours vith invalid date format
       Then it throws a ValidationError with message "La fecha es obligatoria"
+
+
+      Given a developer
+      When we try to add hours vith None task index
+      Then it throws a ValidationError with message "La tarea es obligatoria"
+
+      Given a developer
+      When we try to add hours vith invalid task index
+      Then it throws a ValidationError with message "La tarea es obligatoria"
+
+      Given a developer
+      When we try to add hour with invalid task
+      Then it throws a ValidationError with message "La tarea: tarea3 no esta disponible"
