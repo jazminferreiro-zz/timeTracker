@@ -96,9 +96,16 @@ def step_impl(context):
 
 #############################################################
 
+@when('we try to add a not integer quantity value')
+def step_impl(context):
+	context.exc = context.model.cargarHoras("cinco", "p1", 0, "20/12/2016")
+
+
+#############################################################
+
 @when('we try to add more than 24 hours')
 def step_impl(context):
-	context.exc = context.model.cargarHoras(5, "p1",0, 25, "20/12/2016")
+	context.exc = context.model.cargarHoras(25, "p1",0, "20/12/2016")
 
 
 #############################################################

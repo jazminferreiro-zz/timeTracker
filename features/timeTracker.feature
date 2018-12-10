@@ -40,5 +40,11 @@ Feature: showing off behave
       Then it throws a ValidationError with message "El proyecto es obligatorio"
 
       Given a developer
+      When we try to add a not integer quantity value
+      Then it throws a ValidationError with message "La cantidad de horas debe ser un valor positivo mayor a uno"
+
+      
+
+      Given a developer
       When we try to add more than 24 hours
       Then it throws a ValidationError with message "La cantidad de horas debe ser menor a 24"
