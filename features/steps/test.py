@@ -71,7 +71,7 @@ def step_impl(context, nombre_tarea, nombre_proyecto):
 
 @given('a developer')
 def step_impl(context):
-	context.model = Desarrollador(nombre="juan",apellido = "code",edad= "55");
+	context.model = Desarrollador.objects.create(nombre="juan",apellido = "code",edad= "55");
 	
 
 #############################################################
@@ -155,23 +155,23 @@ def step_impl(context):
 
 @when('we add hour')
 def step_impl(context):
-	proyecto1 = Proyecto(nombre="proyecto1")
-	tarea0 = Tarea(nombre ="tarea0",proyecto = proyecto1)
+	proyecto1 = Proyecto.objects.create(nombre="proyecto1")
+	tarea0 = Tarea.objects.create(nombre ="tarea0",proyecto = proyecto1)
 
-	proyecto2 = Proyecto(nombre="proyecto2")
-	tarea1 = Tarea(nombre ="tarea1",proyecto = proyecto2)
+	proyecto2 = Proyecto.objects.create(nombre="proyecto2")
+	tarea1 = Tarea.objects.create(nombre ="tarea1",proyecto = proyecto2)
 	tareasPorProyectos = {}
 	tareasPorProyectos["proyecto1"] = ["tarea0"]
 	tareasPorProyectos["proyecto2"] = ["tarea1"]
 	tareas = [tarea0, tarea1]
 
 	context.exc = context.model.cargarHoras(2, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
-	print context.exc.msg
+
 
 @then('we will find an hour created')
 def step_impl(context):
 	assert context.failed is False
-	assert context.exc == None is True
+	assert (context.exc == None) is True
 
 #############################################################
 
