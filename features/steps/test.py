@@ -143,6 +143,21 @@ def step_impl(context):
 	context.exc = context.model.cargarHoras(2, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
 
 #############################################################
+
+@when('we try to add more than 24 hours of work for the same day')
+def step_impl(context):
+	proyecto1 = Proyecto.objects.create(nombre="proyecto1")
+	tarea0 = Tarea.objects.create(nombre ="tarea0",proyecto = proyecto1, responsable = context.model)
+
+	tareasPorProyectos = {}
+	tareasPorProyectos["proyecto1"] = ["tarea0"]
+	tareas = [tarea0]
+
+	for x in range (0,25):
+		context.exc = context.model.cargarHoras(1, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
+
+#############################################################
+
 @then('it throws a ValidationError with message "{msg}"')
 def step_impl(context, msg):
 	print context.exc.msg

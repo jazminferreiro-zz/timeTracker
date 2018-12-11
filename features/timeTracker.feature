@@ -69,5 +69,9 @@ Feature: showing off behave
       Then it throws a ValidationError with message "La tarea: tarea0 no esta a cargo de este desarrollador"
 
       Given a developer
+      When we try to add more than 24 hours of work for the same day
+      Then it throws a ValidationError with message "La cantidad de horas cargadas por dia para una tarea debe ser menor o igual a 24"
+
+      Given a developer
       When we try to add hour with invalid task
       Then it throws a ValidationError with message "La tarea: tarea3 no esta disponible"

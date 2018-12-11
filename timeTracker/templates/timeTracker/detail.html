@@ -16,9 +16,10 @@
 
 {% for horas in desarrollador.horas_set.all %}
     <div class="row">
-        <div class="col-sm-5">{{horas.tarea.proyecto.nombre}}</div>
-        <div class="col-sm-5">{{horas.tarea.nombre}}</div>
+        <div class="col-sm-4">{{horas.tarea.proyecto.nombre}}</div>
+        <div class="col-sm-4">{{horas.tarea.nombre}}</div>
         <div class="col-sm-2">{{horas.cantidad }}</div>
+        <div class="col-sm-2">{{horas.fecha.date}}</div>
     </div>
 {% endfor %}
 

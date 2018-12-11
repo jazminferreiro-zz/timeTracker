@@ -48,7 +48,7 @@ class Desarrollador(models.Model):
 			fecha = datetime.strptime(fecha, '%Y-%m-%d')
 		except:
 			return ValidationError("La fecha es obligatoria")
-
+		
 		try:
 			tarea_index = int(tarea)
 			tarea_name = tareasPorProyecto[proyecto][tarea_index]
@@ -60,6 +60,13 @@ class Desarrollador(models.Model):
 			return ValidationError("La tarea: "+tarea_name+ " no esta disponible")
 		if(tarea.responsable != self):
 			return ValidationError("La tarea: "+tarea_name+ " no esta a cargo de este desarrollador")
+		horasTrabajadas = 0
+		for hora in self.horas_set.all() :
+			if (hora.tarea == tarea and hora.fecha.date() == fecha.date()):
+				horasTrabajadas += hora.cantidad
+		if (horasTrabajadas+cantidad > 24 ):
+			return ValidationError("La cantidad de horas cargadas por dia para una tarea debe ser menor o igual a 24")
+		
 		self.horas_set.create( desarrollador = self, tarea = tarea, cantidad = cantidad, fecha = fecha)
 		return None
 
@@ -79,7 +86,7 @@ class Horas(models.Model):
 	desarrollador = models.ForeignKey(Desarrollador, on_delete=models.CASCADE, blank= True, null=True)
 	tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL, blank= True, null=True)
 	cantidad = models.IntegerField(validators=[MinValueValidator(0)])
-	fecha = models.DateTimeField(auto_now_add=True, blank=False)
+	fecha = models.DateTimeField(auto_now_add=False, blank=False)
 
 
 	def __str__(self):
