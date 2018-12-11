@@ -65,5 +65,9 @@ Feature: showing off behave
       Then it throws a ValidationError with message "La tarea es obligatoria"
 
       Given a developer
+      When we try to add hours to a task we are not assigned to
+      Then it throws a ValidationError with message "La tarea: tarea0 no esta a cargo de este desarrollador"
+
+      Given a developer
       When we try to add hour with invalid task
       Then it throws a ValidationError with message "La tarea: tarea3 no esta disponible"

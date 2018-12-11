@@ -128,6 +128,19 @@ def step_impl(context):
 def step_impl(context):
 	context.exc = context.model.cargarHoras(2, "p1",0, "2016-12-29",{}, [])
 
+#############################################################
+
+@when('we try to add hours to a task we are not assigned to')
+def step_impl(context):
+	otroDesarrollador = Desarrollador.objects.create(nombre="Lala",apellido = "Lelo",edad= "55")
+	proyecto1 = Proyecto.objects.create(nombre="proyecto1")
+	tarea0 = Tarea.objects.create(nombre ="tarea0",proyecto = proyecto1, responsable = otroDesarrollador)
+
+	tareasPorProyectos = {}
+	tareasPorProyectos["proyecto1"] = ["tarea0"]
+	tareas = [tarea0]
+
+	context.exc = context.model.cargarHoras(2, "proyecto1",0, "2016-12-29",tareasPorProyectos, tareas)
 
 #############################################################
 @then('it throws a ValidationError with message "{msg}"')
@@ -156,10 +169,10 @@ def step_impl(context):
 @when('we add hour')
 def step_impl(context):
 	proyecto1 = Proyecto.objects.create(nombre="proyecto1")
-	tarea0 = Tarea.objects.create(nombre ="tarea0",proyecto = proyecto1)
+	tarea0 = Tarea.objects.create(nombre ="tarea0",proyecto = proyecto1, responsable = context.model)
 
 	proyecto2 = Proyecto.objects.create(nombre="proyecto2")
-	tarea1 = Tarea.objects.create(nombre ="tarea1",proyecto = proyecto2)
+	tarea1 = Tarea.objects.create(nombre ="tarea1",proyecto = proyecto2, responsable = context.model)
 	tareasPorProyectos = {}
 	tareasPorProyectos["proyecto1"] = ["tarea0"]
 	tareasPorProyectos["proyecto2"] = ["tarea1"]

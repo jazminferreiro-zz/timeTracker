@@ -10,16 +10,6 @@ class Proyecto(models.Model):
 	def getNombre(self):
 		return str(self.nombre)
 
-
-class Tarea(models.Model):
-	nombre = models.CharField(max_length=200)
-	proyecto = models.ForeignKey(Proyecto, blank= True, null=True, on_delete=models.SET_NULL)
-
-	def getNombre(self):
-		return str(self.nombre)
-	def getProyecto(self):
-		return str(self.proyecto.getNombre())
-
 class ValidationError:
 
 	def __init__(self, msg):
@@ -68,12 +58,22 @@ class Desarrollador(models.Model):
 		tarea =  self.buscarTarea(tareas, tarea_name)
 		if(tarea == None):
 			return ValidationError("La tarea: "+tarea_name+ " no esta disponible")
-
+		if(tarea.responsable != self):
+			return ValidationError("La tarea: "+tarea_name+ " no esta a cargo de este desarrollador")
 		self.horas_set.create( desarrollador = self, tarea = tarea, cantidad = cantidad, fecha = fecha)
 		return None
 
 	def __str__(self):
 		return self.nombre+' '+self.apellido
+
+class Tarea(models.Model):
+	nombre = models.CharField(max_length=200)
+	proyecto = models.ForeignKey(Proyecto, blank= True, null=True, on_delete=models.SET_NULL)
+	responsable = models.ForeignKey(Desarrollador, blank= True, null=True, on_delete=models.SET_NULL)
+	def getNombre(self):
+		return str(self.nombre)
+	def getProyecto(self):
+		return str(self.proyecto.getNombre())
 
 class Horas(models.Model):
 	desarrollador = models.ForeignKey(Desarrollador, on_delete=models.CASCADE, blank= True, null=True)
