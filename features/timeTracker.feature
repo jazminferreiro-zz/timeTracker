@@ -70,7 +70,7 @@ Feature: showing off behave
 
       Given a developer
       When we try to add more than 24 hours of work for the same day
-      Then it throws a ValidationError with message "La cantidad de horas cargadas por dia para una tarea debe ser menor o igual a 24"
+      Then it throws a ValidationError with message "La cantidad total de horas cargadas por dia debe ser menor o igual a 24"
 
       Given a developer
       When we try to add hour with invalid task

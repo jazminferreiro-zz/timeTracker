@@ -62,10 +62,10 @@ class Desarrollador(models.Model):
 			return ValidationError("La tarea: "+tarea_name+ " no esta a cargo de este desarrollador")
 		horasTrabajadas = 0
 		for hora in self.horas_set.all() :
-			if (hora.tarea == tarea and hora.fecha.date() == fecha.date()):
+			if (hora.fecha.date() == fecha.date()):
 				horasTrabajadas += hora.cantidad
 		if (horasTrabajadas+cantidad > 24 ):
-			return ValidationError("La cantidad de horas cargadas por dia para una tarea debe ser menor o igual a 24")
+			return ValidationError("La cantidad total de horas cargadas por dia debe ser menor o igual a 24")
 		
 		self.horas_set.create( desarrollador = self, tarea = tarea, cantidad = cantidad, fecha = fecha)
 		return None
