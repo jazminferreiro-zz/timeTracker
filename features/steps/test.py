@@ -158,7 +158,7 @@ def step_impl(context):
 
 #############################################################
 
-@then('it throws a ValidationError with message "{msg}"')
+@then('it show message "{msg}"')
 def step_impl(context, msg):
 	print context.exc.msg
 	assert (context.exc.msg == msg) is True

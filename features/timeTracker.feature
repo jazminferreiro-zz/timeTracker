@@ -33,45 +33,45 @@ Feature: showing off behave
  Scenario: add hour validation
       Given a developer
       When we try to add hours with not project
-      Then it throws a ValidationError with message "El proyecto es obligatorio"
+      Then it show message "El proyecto es obligatorio"
 
       Given a developer
       When we try to add hours with black project
-      Then it throws a ValidationError with message "El proyecto es obligatorio"
+      Then it show message "El proyecto es obligatorio"
 
       Given a developer
       When we try to add a not integer quantity value
-      Then it throws a ValidationError with message "La cantidad de horas debe ser un valor positivo mayor a uno"
+      Then it show message "La cantidad de horas debe ser un valor positivo mayor a uno"
 
       Given a developer
       When we try to add more than 24 hours
-      Then it throws a ValidationError with message "La cantidad de horas debe ser menor a 24"
+      Then it show message "La cantidad de horas debe ser menor a 24"
 
       Given a developer
       When we try to we try to add hours vith no date
-      Then it throws a ValidationError with message "La fecha es obligatoria"
+      Then it show message "La fecha es obligatoria"
 
       Given a developer
       When we try to add hours vith invalid date format
-      Then it throws a ValidationError with message "La fecha es obligatoria"
+      Then it show message "La fecha es obligatoria"
 
 
       Given a developer
       When we try to add hours vith None task index
-      Then it throws a ValidationError with message "La tarea es obligatoria"
+      Then it show message "La tarea es obligatoria"
 
       Given a developer
       When we try to add hours vith invalid task index
-      Then it throws a ValidationError with message "La tarea es obligatoria"
+      Then it show message "La tarea es obligatoria"
 
       Given a developer
       When we try to add hours to a task we are not assigned to
-      Then it throws a ValidationError with message "La tarea: tarea0 no esta a cargo de este desarrollador"
+      Then it show message "La tarea: tarea0 no esta a cargo de este desarrollador"
 
       Given a developer
       When we try to add more than 24 hours of work for the same day
-      Then it throws a ValidationError with message "La cantidad total de horas cargadas por dia debe ser menor o igual a 24"
+      Then it show message "La cantidad total de horas cargadas por dia debe ser menor o igual a 24"
 
       Given a developer
       When we try to add hour with invalid task
-      Then it throws a ValidationError with message "La tarea: tarea3 no esta disponible"
+      Then it show message "La tarea: tarea3 no esta disponible"
